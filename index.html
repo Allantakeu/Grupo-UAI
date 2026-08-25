@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Repasses UAI Veículos — Grupo VIP de repasses abaixo da FIPE</title>
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1095619742966236');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1095619742966236&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100%;
+        }
+
+        body {
+            background: #2c2f36;
+            font-family: "Roboto Variable", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 28px 14px;
+        }
+
+        .container {
+            max-width: 430px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            border-radius: 28px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), 0 2px 10px rgba(0, 0, 0, 0.18);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 36px 28px 40px;
+            gap: 0;
+            animation: uaiFadeIn 0.5s ease both;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            border-radius: 28px 28px 0 0;
+            background: linear-gradient(90deg, #22c55e, #17a34e);
+        }
+
+        @keyframes uaiFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 16px 10px;
+                align-items: flex-start;
+            }
+
+            .container {
+                border-radius: 22px;
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.18);
+                padding: 30px 20px 32px;
+            }
+
+            .container::before {
+                border-radius: 22px 22px 0 0;
+            }
+        }
+
+        /* Logo ring (efeito de status/story pulsando) */
+        .st-anel {
+            cursor: pointer;
+            background: #25d366;
+            border-radius: 50%;
+            padding: 4px;
+            display: inline-flex;
+            position: relative;
+            margin: 0 0 14px;
+        }
+
+        .st-anel::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border: 2px solid rgba(37, 211, 102, 0.45);
+            border-radius: 50%;
+            animation: stPulso 2s ease-out infinite;
+        }
+
+        @keyframes stPulso {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.35); opacity: 0; }
+        }
+
+        /* Logo Circle */
+        .logo-circle {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-circle img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+
+        /* Group Title */
+        .group-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .group-title h1 {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0d0d0d;
+            letter-spacing: -0.2px;
+        }
+
+        .verified-badge {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            object-fit: contain;
+        }
+
+        /* Group Meta */
+        .group-meta {
+            text-align: center;
+            width: 100%;
+        }
+
+        .group-meta .created-at {
+            font-size: 14px;
+            font-weight: 400;
+            color: #888;
+            margin: 0 0 18px;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .group-meta .member-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .member-count {
+            background: #eef1ef;
+            padding: 5px 14px 5px 16px;
+            margin-left: -8px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #666;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .welcome-message h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0d0d0d;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .welcome-message p {
+            font-size: 16px;
+            font-weight: 400;
+            color: #737373;
+            line-height: 1.3;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.07), rgba(220, 38, 38, 0.1));
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            border-radius: 14px;
+            padding: 13px 16px;
+            text-align: center;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .alert-box p {
+            font-size: 13px;
+            color: rgb(200, 30, 30);
+            font-weight: 700;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* State Selector */
+        .state-section {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .state-label {
+            font-size: 14px;
+            font-weight: 400;
+            color: #737373;
+            text-align: center;
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+
+        .state-selector {
+            position: relative;
+            width: 100%;
+        }
+
+        .state-button {
+            width: 100%;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e6e6e6;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            color: #0d0d0d;
+            font-weight: 600;
+            box-sizing: border-box;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .state-button:hover {
+            border-color: #37a960;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+        }
+
+        #arrow {
+            font-size: 11px;
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .state-button-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .state-button-icon {
+            font-size: 18px;
+        }
+
+        .state-dropdown {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 16px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 12px 30px rgba(15, 46, 28, 0.14);
+        }
+
+        .state-dropdown.open {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .state-option {
+            padding: 14px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .state-option:hover {
+            background: #f9fff7;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .state-option.selected {
+            background: #f0fdf4;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .state-option-icon {
+            font-size: 16px;
+        }
+
+        /* Enter Button */
+        .enter-btn {
+            width: 100%;
+            padding: 17px 0;
+            background: rgb(55, 169, 96);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.28);
+            transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+        }
+
+        .enter-btn:hover {
+            background: rgb(48, 150, 84);
+            box-shadow: 0 12px 28px rgba(34, 197, 94, 0.34);
+            transform: translateY(-1px);
+        }
+
+        .enter-btn:active {
+            background: rgb(42, 133, 74);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.28);
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo Circle -->
+        <div class="st-anel">
+            <div class="logo-circle">
+                <img src="images/logo.webp" alt="UAI Veículos">
+            </div>
+        </div>
+
+        <!-- Group Title -->
+        <div class="group-title">
+            <h1>REPASSES UAI VEÍCULOS</h1>
+            <img src="images/verified.png" alt="Verificado" class="verified-badge">
+        </div>
+
+        <!-- Group Meta -->
+        <div class="group-meta">
+            <p class="created-at">Criado em 23 de jan. de 2026</p>
+            <div class="member-info">
+                <img src="images/banner-pastor.webp" alt="Membro" class="member-avatar">
+                <div class="member-count"><span id="member-count-badge">+472</span></div>
+            </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <h2>· BEM VINDO AO GRUPO VIP DE REPASSES ·</h2>
+            <p>+70 veículos abaixo da FIPE por dia. Acesso direto ao Pastor — fundador da Uai Veículos.</p>
+        </div>
+
+        <!-- Alert Box -->
+        <div class="alert-box">
+            <p>⚠️ Já são <span id="alert-members">473</span>/<span id="alert-max">500</span> membros<br>Apenas <span id="alert-slots">27</span> vagas restantes — grupo será fechado em breve</p>
+        </div>
+
+        <!-- State Selector -->
+        <div class="state-section">
+            <div class="state-label">
+                Temos revendedores parceiros no seu estado.<br>
+                Confirme ou selecione sua localização:
+            </div>
+
+            <div class="state-selector">
+                <button class="state-button" onclick="toggleStates()">
+                    <div class="state-button-content">
+                        <span class="state-button-icon">📍</span>
+                        <span id="selected-state">São Paulo (SP)</span>
+                    </div>
+                    <span id="arrow">▲</span>
+                </button>
+
+                <div class="state-dropdown" id="state-dropdown">
+                    <div class="state-option selected" data-state="SP">
+                        <span class="state-option-icon">📍</span>
+                        <span>São Paulo (SP)</span>
+                    </div>
+                    <div class="state-option" data-state="RJ">
+                        <span class="state-option-icon">📍</span>
+                        <span>Rio de Janeiro (RJ)</span>
+                    </div>
+                    <div class="state-option" data-state="MG">
+                        <span class="state-option-icon">📍</span>
+                        <span>Minas Gerais (MG)</span>
+                    </div>
+                    <div class="state-option" data-state="BA">
+                        <span class="state-option-icon">📍</span>
+                        <span>Bahia (BA)</span>
+                    </div>
+                    <div class="state-option" data-state="SC">
+                        <span class="state-option-icon">📍</span>
+                        <span>Santa Catarina (SC)</span>
+                    </div>
+                    <div class="state-option" data-state="RS">
+                        <span class="state-option-icon">📍</span>
+                        <span>Rio Grande do Sul (RS)</span>
+                    </div>
+                    <div class="state-option" data-state="PR">
+                        <span class="state-option-icon">📍</span>
+                        <span>Paraná (PR)</span>
+                    </div>
+                    <div class="state-option" data-state="GO">
+                        <span class="state-option-icon">📍</span>
+                        <span>Goiás (GO)</span>
+                    </div>
+                    <div class="state-option" data-state="DF">
+                        <span class="state-option-icon">📍</span>
+                        <span>Distrito Federal (DF)</span>
+                    </div>
+                    <div class="state-option" data-state="ES">
+                        <span class="state-option-icon">📍</span>
+                        <span>Espírito Santo (ES)</span>
+                    </div>
+                    <div class="state-option" data-state="PE">
+                        <span class="state-option-icon">📍</span>
+                        <span>Pernambuco (PE)</span>
+                    </div>
+                    <div class="state-option" data-state="CE">
+                        <span class="state-option-icon">📍</span>
+                        <span>Ceará (CE)</span>
+                    </div>
+                    <div class="state-option" data-state="PA">
+                        <span class="state-option-icon">📍</span>
+                        <span>Pará (PA)</span>
+                    </div>
+                    <div class="state-option" data-state="MT">
+                        <span class="state-option-icon">📍</span>
+                        <span>Mato Grosso (MT)</span>
+                    </div>
+                    <div class="state-option" data-state="MS">
+                        <span class="state-option-icon">📍</span>
+                        <span>Mato Grosso do Sul (MS)</span>
+                    </div>
+                    <div class="state-option" data-state="PB">
+                        <span class="state-option-icon">📍</span>
+                        <span>Paraíba (PB)</span>
+                    </div>
+                    <div class="state-option" data-state="MA">
+                        <span class="state-option-icon">📍</span>
+                        <span>Maranhão (MA)</span>
+                    </div>
+                    <div class="state-option" data-state="PI">
+                        <span class="state-option-icon">📍</span>
+                        <span>Piauí (PI)</span>
+                    </div>
+                    <div class="state-option" data-state="AL">
+                        <span class="state-option-icon">📍</span>
+                        <span>Alagoas (AL)</span>
+                    </div>
+                    <div class="state-option" data-state="SE">
+                        <span class="state-option-icon">📍</span>
+                        <span>Sergipe (SE)</span>
+                    </div>
+                    <div class="state-option" data-state="AC">
+                        <span class="state-option-icon">📍</span>
+                        <span>Acre (AC)</span>
+                    </div>
+                    <div class="state-option" data-state="AM">
+                        <span class="state-option-icon">📍</span>
+                        <span>Amazonas (AM)</span>
+                    </div>
+                    <div class="state-option" data-state="AP">
+                        <span class="state-option-icon">📍</span>
+                        <span>Amapá (AP)</span>
+                    </div>
+                    <div class="state-option" data-state="RO">
+                        <span class="state-option-icon">📍</span>
+                        <span>Rondônia (RO)</span>
+                    </div>
+                    <div class="state-option" data-state="RR">
+                        <span class="state-option-icon">📍</span>
+                        <span>Roraima (RR)</span>
+                    </div>
+                    <div class="state-option" data-state="TO">
+                        <span class="state-option-icon">📍</span>
+                        <span>Tocantins (TO)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enter Button -->
+        <button class="enter-btn" onclick="enterGroup()">Entrar no Grupo</button>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Preenche números reais/atualizáveis a partir de js/data.js
+        (function populateFromConfig() {
+            const cfg = window.UAI_CONFIG || {};
+            const membersEl = document.getElementById('member-count-badge');
+            const alertMembers = document.getElementById('alert-members');
+            const alertMax = document.getElementById('alert-max');
+            const alertSlots = document.getElementById('alert-slots');
+            const selectedState = document.getElementById('selected-state');
+            const slotsLeft = (cfg.maxMembers || 500) - (cfg.members || 0);
+
+            if (membersEl) membersEl.textContent = '+' + (cfg.members ?? 472);
+            if (alertMembers) alertMembers.textContent = cfg.members ?? 473;
+            if (alertMax) alertMax.textContent = cfg.maxMembers ?? 500;
+            if (alertSlots) alertSlots.textContent = slotsLeft;
+            if (selectedState) selectedState.textContent = cfg.state || 'São Paulo (SP)';
+        })();
+
+        // Toggle state dropdown
+        function toggleStates() {
+            const dropdown = document.getElementById('state-dropdown');
+            const arrow = document.getElementById('arrow');
+            dropdown.classList.toggle('open');
+            arrow.textContent = dropdown.classList.contains('open') ? '▼' : '▲';
+        }
+
+        // Handle state selection
+        document.querySelectorAll('.state-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const selectedState = this.getAttribute('data-state');
+                const stateText = this.querySelector('span:last-child').textContent.trim();
+
+                // Update button text
+                document.getElementById('selected-state').textContent = stateText;
+
+                // Remove selected class from all options
+                document.querySelectorAll('.state-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Add selected class to clicked option
+                this.classList.add('selected');
+
+                // Guarda o estado escolhido para a próxima página (success.html) usar
+                localStorage.setItem('uaiSelectedState', stateText);
+                localStorage.setItem('uaiSelectedStateCode', selectedState);
+
+                // Close dropdown
+                toggleStates();
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const selector = document.querySelector('.state-selector');
+            if (!selector.contains(event.target)) {
+                const dropdown = document.getElementById('state-dropdown');
+                dropdown.classList.remove('open');
+                document.getElementById('arrow').textContent = '▲';
+            }
+        });
+
+        // Enter group - go to next page (que já rola até o formulário de cadastro)
+        function enterGroup() {
+            window.location.href = 'success.html?scrollTo=payment-form';
+        }
+    </script>
+</body>
+</html>

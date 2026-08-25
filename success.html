@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Repasses UAI Veículos — Grupo VIP de repasses abaixo da FIPE</title>
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1095619742966236');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1095619742966236&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <script src="https://unpkg.com/lucide@0.468.0"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #363b45;
+            font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #333;
+            padding-top: 10px;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px 28px 0 0;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 44px rgba(0, 0, 0, 0.24);
+        }
+
+        @media (max-width: 430px) {
+            body {
+                padding-top: 8px;
+            }
+
+            .container {
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
+        /* Notification toast */
+        .notify-toast {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120%);
+            width: min(calc(100% - 28px), 396px);
+            background: white;
+            border: 1px solid #f0f0f0;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 200;
+            transition: transform 360ms ease;
+            display: none;
+        }
+
+        .notify-toast.show {
+            display: flex;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notify-avatar-wrap {
+            position: relative;
+            flex: 0 0 66px;
+            height: 66px;
+        }
+
+        .notify-toast .notify-avatar {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .notify-whatsapp {
+            position: absolute;
+            right: -2px;
+            bottom: -2px;
+            display: flex;
+            width: 22px;
+            height: 22px;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            border-radius: 50%;
+            background: #20bd55;
+        }
+
+        .notify-whatsapp img {
+            width: 14px;
+            height: 14px;
+        }
+
+        .notify-toast p {
+            min-width: 0;
+            font-size: 15px;
+            line-height: 1.35;
+        }
+
+        .notify-toast .notify-name {
+            font-weight: 700;
+            color: #181818;
+        }
+
+        .notify-toast .notify-sub {
+            color: #777;
+            font-size: 15px;
+        }
+
+        .notify-toast .notify-group {
+            color: #22a957;
+            font-weight: 700;
+        }
+        
+        /* Social Links Header */
+        .social-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: #f5f5f5;
+            border-bottom: 0;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 13px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid rgb(230, 230, 230);
+            text-decoration: none;
+            color: rgb(50, 50, 50);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover {
+            background: rgb(245, 245, 245);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+        
+        .social-link img {
+            width: 27px;
+            height: 27px;
+        }
+        
+        /* Group Info Section */
+        .group-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 20px 18px;
+            text-align: center;
+        }
+        
+        .logo-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #000;
+            border: 3px solid #6ae7a8;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 17px;
+            box-shadow: 0 0 0 4px #d8f8e5;
+        }
+        
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .group-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .group-title h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: rgb(20, 20, 20);
+            letter-spacing: -0.5px;
+        }
+        
+        .verified-badge {
+            width: 27px;
+            height: 27px;
+        }
+        
+        .group-meta {
+            font-size: 16px;
+            color: rgb(120, 120, 120);
+            margin-bottom: 12px;
+        }
+        
+        .group-meta .members {
+            color: #22c55e;
+            font-weight: 500;
+        }
+        
+        .group-description {
+            max-width: 380px;
+            font-size: 18px;
+            color: rgb(100, 100, 100);
+            line-height: 1.3;
+            margin-bottom: 19px;
+        }
+        
+        /* Enter Group Button */
+        .enter-group-btn {
+            width: 100%;
+            max-width: 365px;
+            padding: 20px 28px;
+            background: #39ae63;
+            color: white;
+            border: none;
+            border-radius: 32px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(57, 174, 99, 0.22);
+            transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+        }
+
+        .enter-group-btn:hover,
+        .payment-form button:hover {
+            background: #319757;
+            box-shadow: 0 10px 22px rgba(57, 174, 99, 0.24);
+            transform: translateY(-1px);
+        }
+
+        .enter-group-btn:active,
+        .payment-form button:active {
+            box-shadow: none;
+            transform: translateY(0);
+        }
+        
+        /* Cars Section */
+        .cars-section {
+            padding: 30px 20px 32px;
+            background: white;
+            border-top: 1px solid #edf0ed;
+        }
+        
+        .cars-header {
+            margin-bottom: 18px;
+        }
+        
+        .cars-header h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgb(50, 50, 50);
+            margin-bottom: 4px;
+        }
+        
+        .cars-header .highlight {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        
+        .cars-header p {
+            font-size: 14px;
+            color: rgb(120, 120, 120);
+            line-height: 1.4;
+        }
+        
+        /* Cars Grid */
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            position: relative;
+        }
+        
+        .car-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgb(240, 240, 240);
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(11, 45, 26, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .car-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 7px 18px rgba(11, 45, 26, 0.15);
+        }
+        
+        .car-image {
+            width: 100%;
+            height: 78px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .car-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+            color: white;
+            padding: 6px 5px;
+            font-size: 9px;
+        }
+        
+        .car-model {
+            font-weight: 600;
+            margin-bottom: 2px;
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .car-price {
+            font-weight: 700;
+            font-size: 10px;
+        }
+        
+        .car-badge {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: #22c55e;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 7px;
+            font-weight: 600;
+        }
+        
+        .more-cars {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: calc((100% - 24px) / 4);
+            height: 78px;
+            background: rgba(14, 68, 37, 0.72);
+            border-radius: 12px;
+            padding: 8px;
+            text-align: center;
+            z-index: 1;
+        }
+        
+        .more-cars-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2px;
+        }
+        
+        .more-cars-text {
+            font-size: 9px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* Reviews */
+        .reviews-section {
+            padding: 32px 20px 36px;
+            background: #f5f8f5;
+            border-top: 1px solid #eaf0eb;
+        }
+
+        .reviews-section > .reviews-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e8eee9;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 16px rgba(18, 61, 34, 0.06);
+        }
+
+        .review-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .review-head img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .review-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .review-stars {
+            font-size: 12px;
+            color: #f59e0b;
+        }
+
+        .review-when {
+            font-size: 11px;
+            color: #999;
+            margin-left: 6px;
+        }
+
+        .review-text {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .review-photo {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Explanation */
+        .explain-section {
+            padding: 34px 26px;
+            background: white;
+            border-top: 1px solid #edf0ed;
+        }
+
+        .explain-section p {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .explain-section p:first-child {
+            color: #1b2d21;
+            font-size: 17px;
+        }
+
+        /* Urgency box */
+        .urgency-section {
+            margin: 0 16px 24px;
+            background: white;
+            border: 1px solid #e9e9e9;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .urgency-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .urgency-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 44px;
+            border-radius: 50%;
+            background: #edfff3;
+            color: #35b966;
+            position: relative;
+        }
+
+        .urgency-icon::before,
+        .urgency-icon::after {
+            content: '';
+            position: absolute;
+            border: 2px solid currentColor;
+        }
+
+        .urgency-icon::before {
+            width: 7px;
+            height: 7px;
+            top: 11px;
+            left: 12px;
+            border-radius: 50%;
+            box-shadow: 12px 4px 0 -1px #35b966;
+        }
+
+        .urgency-icon::after {
+            width: 12px;
+            height: 8px;
+            left: 10px;
+            bottom: 10px;
+            border-bottom: 0;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .urgency-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .urgency-sub {
+            font-size: 14px;
+            color: #667085;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .urgency-bar-track {
+            width: 100%;
+            height: 10px;
+            background: #edf0ee;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .urgency-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #39ae63, #42d77a);
+            border-radius: 999px;
+        }
+
+        .urgency-count {
+            font-size: 14px;
+            color: #1da653;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        /* Benefits */
+        .benefits-section {
+            padding: 0 26px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: white;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #39ae63;
+            flex-shrink: 0;
+        }
+
+        .benefit-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.4;
+        }
+
+        .benefit-item p {
+            font-size: 16px;
+            color: #222;
+            line-height: 1.38;
+        }
+
+        /* Payment widget */
+        .payment-section {
+            position: relative;
+            margin: 0;
+            padding: 30px 26px 14px;
+            background: white;
+            text-align: center;
+        }
+
+        .payment-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 26px;
+            right: 26px;
+            height: 1px;
+            background: #ececec;
+        }
+
+        .payment-price {
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: #1fa757;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .payment-section h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .payment-step-label {
+            font-size: 16px;
+            color: #7b8491;
+            margin-bottom: 12px;
+        }
+
+        .chat-mock {
+            background: white;
+            padding: 10px 26px 8px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .chat-mock-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .chat-mock-header img {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 2px solid #e7e7e7;
+        }
+
+        .chat-mock-header span {
+            font-size: 13px;
+            font-weight: 700;
+            color: #171717;
+        }
+
+        .checkout-steps {
+            --progress: 15%;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 18px;
+            right: 18px;
+            height: 6px;
+            border-radius: 999px;
+            background: #e4e4e4;
+        }
+
+        .checkout-steps::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 18px;
+            width: var(--progress);
+            height: 6px;
+            border-radius: 999px;
+            background: #42cb78;
+            transition: width 420ms ease;
+        }
+
+        .checkout-step {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            width: 54px;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #9ca3af;
+            transition: color 250ms ease, transform 250ms ease;
+        }
+
+        .step-marker {
+            display: flex;
+            width: 32px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #d0d0d0;
+            border-radius: 50%;
+            background: #e1e1e1;
+            color: white;
+            font-size: 15px;
+        }
+
+        .step-marker svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.4;
+        }
+
+        .checkout-step.is-current .step-marker {
+            border-color: #58d48b;
+            background: white;
+            box-shadow: 0 0 0 4px #d9f8e5;
+            color: #36ae65;
+            animation: current-step-pulse 1.6s ease-in-out infinite;
+        }
+
+        .checkout-step.is-complete {
+            color: #1fa757;
+        }
+
+        .checkout-step.is-complete .step-marker {
+            border-color: #39ae63;
+            background: #39ae63;
+            box-shadow: 0 0 0 4px #d9f8e5;
+            color: white;
+        }
+
+        .checkout-step.is-current {
+            color: #1fa757;
+            transform: translateY(-2px);
+        }
+
+        .checkout-step small {
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        @keyframes current-step-pulse {
+            50% { box-shadow: 0 0 0 7px #d9f8e5; }
+        }
+
+        .payment-form {
+            margin: 0;
+            background: white;
+            border-radius: 0;
+            padding: 0 26px 24px;
+            box-shadow: none;
+        }
+
+        .payment-form label {
+            display: block;
+            font-size: 16px;
+            color: #151515;
+            font-weight: 700;
+            text-align: left;
+            margin-bottom: 6px;
+        }
+
+        .form-hint {
+            margin: 0 0 8px;
+            color: #7b8491;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .payment-form input {
+            width: 100%;
+            padding: 17px 18px;
+            border: 1px solid #dedede;
+            border-radius: 14px;
+            font-size: 20px;
+            margin-bottom: 12px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .payment-form input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
+        }
+
+        .payment-form button {
+            width: 100%;
+            padding: 20px 14px;
+            background: #39ae63;
+            color: white;
+            border: none;
+            border-radius: 32px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .payment-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .payment-form .field-error {
+            display: none;
+            color: #ff4444;
+            font-size: 12px;
+            margin: -8px 0 12px;
+        }
+
+        .pix-result {
+            padding: 8px 26px 4px;
+            text-align: center;
+        }
+
+        .pix-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            background: #fff7e6;
+            color: #b45309;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .pix-status.paid {
+            background: #e8fbf0;
+            color: #1fa757;
+        }
+
+        .pix-qrcode {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 16px;
+            border: 1px solid #ececec;
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .pix-qrcode img {
+            display: block;
+        }
+
+        .pix-hint {
+            font-size: 14px;
+            color: #667085;
+            margin-bottom: 10px;
+        }
+
+        .pix-copy-input {
+            width: 100%;
+            resize: none;
+            padding: 14px 16px;
+            border: 1px solid #dedede;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .pix-copy-btn {
+            width: 100%;
+            padding: 16px 14px;
+            background: #171717;
+            color: white;
+            border: none;
+            border-radius: 32px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .pix-copy-btn:hover {
+            background: #2b2b2b;
+            transform: translateY(-1px);
+        }
+
+        .pix-copy-btn.copied {
+            background: #1fa757;
+        }
+
+        .pix-receiver-info {
+            margin: 16px 0;
+            padding: 16px 18px;
+            background: #f0fdf4;
+            border: 1px solid #bbf0d0;
+            border-radius: 14px;
+            text-align: left;
+        }
+
+        .pix-receiver-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #178a4c;
+            margin-bottom: 10px;
+        }
+
+        .pix-receiver-title svg {
+            width: 17px;
+            height: 17px;
+            stroke-width: 2.4;
+            flex-shrink: 0;
+        }
+
+        .pix-receiver-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            font-size: 14px;
+            padding: 6px 0;
+            border-top: 1px solid #dcf5e6;
+        }
+
+        .pix-receiver-row:first-of-type {
+            border-top: none;
+        }
+
+        .pix-receiver-row span {
+            color: #4b7a5f;
+        }
+
+        .pix-receiver-row strong {
+            color: #10321f;
+            text-align: right;
+        }
+
+        .pix-receiver-note {
+            margin: 10px 0 0;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #4b7a5f;
+        }
+
+        .payment-secure {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            font-size: 15px;
+            color: #9a9a9a;
+            padding: 8px 16px 24px;
+        }
+
+        .payment-secure svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .promo-banner {
+            width: 100%;
+            display: block;
+        }
+
+        @media (max-width: 360px) {
+            .social-header {
+                padding-inline: 12px;
+            }
+
+            .social-link {
+                gap: 6px;
+                padding: 7px 9px;
+                font-size: 14px;
+            }
+
+            .social-link img {
+                width: 23px;
+                height: 23px;
+            }
+
+            .group-title h1 {
+                font-size: 21px;
+            }
+
+            .group-description {
+                font-size: 16px;
+            }
+
+            .cars-section,
+            .reviews-section {
+                padding-inline: 16px;
+            }
+
+            .cars-grid {
+                gap: 6px;
+            }
+
+            .car-image,
+            .more-cars {
+                height: 70px;
+            }
+
+            .payment-section,
+            .chat-mock,
+            .payment-form {
+                padding-inline: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification toast (nomes vindos de js/data.js) -->
+    <div class="notify-toast" id="notify-toast">
+        <div class="notify-avatar-wrap">
+            <img class="notify-avatar" id="notify-avatar" src="images/review-avatar1.jpeg" alt="">
+            <span class="notify-whatsapp"><img src="images/whatsapp-icon.png" alt=""></span>
+        </div>
+        <p>
+            <span class="notify-name" id="notify-name">—</span><br>
+            <span class="notify-sub">acabou de entrar no </span><span class="notify-group">Grupo de Repasses</span>
+        </p>
+    </div>
+
+    <div class="container">
+        <!-- Social Header -->
+        <div class="social-header">
+            <a href="#" class="social-link" onclick="return false;">
+                <img src="images/whatsapp-icon.png" alt="WhatsApp">
+                <span>WhatsApp</span>
+            </a>
+            <a href="#" class="social-link" onclick="return false;">
+                <img src="images/instagram-icon.png" alt="Instagram">
+                <span>Oficial 3,5 mi</span>
+            </a>
+        </div>
+
+        <!-- Group Info -->
+        <div class="group-info">
+            <div class="logo-circle">
+                <img src="images/logo.webp" alt="UAI Veículos">
+            </div>
+
+            <div class="group-title">
+                <h1>REPASSES UAI VEÍCULOS</h1>
+                <img src="images/verified.png" alt="Verificado" class="verified-badge">
+            </div>
+
+            <div class="group-meta">
+                Grupo <span class="members" id="group-members-text">· 473 membros</span>
+            </div>
+
+            <p class="group-description">
+                Grupo de repasse oficial da Uai Veículos. Carros, motos e caminhões abaixo da FIPE.
+            </p>
+
+            <button class="enter-group-btn" onclick="document.getElementById('payment-form').scrollIntoView({behavior:'smooth'})">Entrar no Grupo</button>
+        </div>
+
+        <!-- Cars Section -->
+        <div class="cars-section">
+            <div class="cars-header">
+                <h2>📍 Alguns repasses disponíveis em <span class="highlight" id="cars-state">São Paulo (SP):</span></h2>
+                <p>A Uai Veículos também posta diariamente oportunidades de repasse em todo o Brasil.</p>
+            </div>
+
+            <div class="cars-grid" id="cars-grid">
+                <div class="more-cars">
+                    <div class="more-cars-number" id="extra-vehicles">+623</div>
+                    <div class="more-cars-text">veículos disponíveis</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="reviews-section">
+            <div class="reviews-title">⭐ Quem já comprou no grupo:</div>
+            <div id="reviews-list"><!-- gerado via js/data.js --></div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explain-section">
+            <p><strong>Por que esses carros estão tão baratos?</strong></p>
+            <p>Lojas que vendem carros novos recebem usados como parte do pagamento na troca — e aceitam esses veículos <strong>bem abaixo do preço de mercado</strong> para fechar a venda do zero-quilômetro na hora.</p>
+            <p>Carro parado no pátio é prejuízo diário: IPVA, seguro, espaço e depreciação. Por isso a loja prefere <strong>repassar rápido</strong> do que segurar o estoque meses esperando o preço cheio.</p>
+            <p>A Uai Veículos conecta diretamente o comprador a essas lojas — <strong>sem intermediário, sem taxa de anúncio.</strong> O veículo sai da loja direto para quem compra, com preço de custo real.</p>
+            <p>Esses preços não são erro. São veículos com documentação completa que as lojas precisam repassar rápido. Quem está no grupo tem acesso antes de ir para o mercado pelo preço cheio.</p>
+        </div>
+
+        <!-- Urgency -->
+        <div class="urgency-section">
+            <div class="urgency-header">
+                <div class="urgency-icon" aria-hidden="true"></div>
+                <div>
+                    <div class="urgency-title">Grupo fechado · vagas limitadas</div>
+                    <div class="urgency-sub" id="urgency-sub">Apenas 27 vagas restantes de 500</div>
+                </div>
+            </div>
+            <div class="urgency-bar-track">
+                <div class="urgency-bar-fill" id="urgency-bar-fill" style="width: 94%;"></div>
+            </div>
+            <div class="urgency-count" id="urgency-count">473/500</div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="benefits-section">
+            <div class="benefit-item">
+                <span class="benefit-icon"><i data-lucide="zap"></i></span>
+                <p><strong>Adicionado em até 5 minutos.</strong> Após o pagamento confirmado, você é incluído no grupo automaticamente — sem espera, sem burocracia.</p>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon"><i data-lucide="shield-check"></i></span>
+                <p><strong>Por que o acesso é pago?</strong> O valor garante que apenas compradores sérios entrem, mantendo a qualidade das oportunidades.</p>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon"><i data-lucide="star"></i></span>
+                <p><strong>Pagamento único e vitalício.</strong> Pague uma vez e receba para sempre as melhores oportunidades — sem mensalidade.</p>
+            </div>
+        </div>
+
+        <!-- Payment widget -->
+        <div class="payment-section" id="payment-form">
+            <div class="payment-price" id="payment-price">Acesso VIP · R$ 49,90</div>
+            <h2>Garanta sua vaga agora</h2>
+            <p class="payment-step-label" id="payment-step-label">Qual é o seu WhatsApp?</p>
+        </div>
+
+        <div class="chat-mock">
+            <div class="chat-mock-header">
+                <img src="images/logo.webp" alt="UAI">
+                <span>GRUPO REPASSES UAI VEÍCULOS</span>
+            </div>
+            <div class="checkout-steps" aria-label="Etapas de cadastro">
+                <div class="checkout-step is-complete" data-checkout-step="you">
+                    <span class="step-marker"><i data-lucide="users"></i></span>
+                    <small>Você</small>
+                </div>
+                <div class="checkout-step is-current" data-checkout-step="phone">
+                    <span class="step-marker"><i data-lucide="message-circle"></i></span>
+                    <small>WhatsApp</small>
+                </div>
+                <div class="checkout-step" data-checkout-step="name">
+                    <span class="step-marker"><i data-lucide="user-round"></i></span>
+                    <small>Nome</small>
+                </div>
+                <div class="checkout-step" data-checkout-step="cpf">
+                    <span class="step-marker"><i data-lucide="badge-check"></i></span>
+                    <small>CPF</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Etapa 1: WhatsApp -->
+        <form class="payment-form" id="step-phone" onsubmit="return handlePhoneStep(event)">
+            <label for="input-phone">WhatsApp</label>
+            <p class="form-hint">Número que será adicionado ao grupo</p>
+            <input type="tel" id="input-phone" placeholder="(00) 00000-0000" autocomplete="tel" required>
+            <div class="field-error" id="error-phone">Informe um número de WhatsApp válido.</div>
+            <button type="submit">Continuar</button>
+        </form>
+
+        <!-- Etapa 2: Nome + E-mail -->
+        <form class="payment-form" id="step-name" style="display:none;" onsubmit="return handleNameStep(event)">
+            <label for="input-name">Primeiro Nome</label>
+            <p class="form-hint">Como deseja ser chamado no grupo</p>
+            <input type="text" id="input-name" placeholder="Seu primeiro nome" autocomplete="given-name" required>
+            <div class="field-error" id="error-name">Informe seu nome.</div>
+
+            <label for="input-email">E-mail</label>
+            <p class="form-hint">Usado para enviar o comprovante do PIX</p>
+            <input type="email" id="input-email" placeholder="seuemail@exemplo.com" autocomplete="email" required>
+            <div class="field-error" id="error-email">Informe um e-mail válido.</div>
+
+            <button type="submit">Continuar</button>
+        </form>
+
+        <!-- Etapa 3: CPF + pagamento -->
+        <form class="payment-form" id="step-cpf" style="display:none;" onsubmit="return handleCpfStep(event)">
+            <label for="input-cpf">CPF</label>
+            <p class="form-hint">Usado exclusivamente para gerar o PIX</p>
+            <input type="text" id="input-cpf" placeholder="000.000.000-00" inputmode="numeric" required>
+            <div class="field-error" id="error-cpf">Informe um CPF válido.</div>
+            <button type="submit" id="pay-button">Pagar <span id="pay-price">R$ 49,90</span> com PIX</button>
+            <div class="field-error" id="error-pix" style="text-align:center;">Não foi possível gerar o PIX. Tente novamente.</div>
+        </form>
+
+        <!-- Resultado: QR Code / copia-e-cola -->
+        <div class="pix-result" id="pix-result" style="display:none;">
+            <div class="pix-status" id="pix-status">Aguardando pagamento…</div>
+
+            <div class="pix-receiver-info">
+                <div class="pix-receiver-title"><i data-lucide="shield-check"></i>Confira o recebedor antes de pagar</div>
+                <div class="pix-receiver-row"><span>Recebedor</span><strong>MARKETPLACE BRASIL ONLINE</strong></div>
+                <div class="pix-receiver-row"><span>CNPJ</span><strong>65.591.209/0001-12</strong></div>
+                <div class="pix-receiver-row"><span>Instituição</span><strong>Basspago</strong></div>
+                <p class="pix-receiver-note">Esse é o único recebedor oficial da Uai Repasses. Se o nome, CNPJ ou instituição no seu aplicativo do banco vier diferente, não finalize o pagamento.</p>
+            </div>
+
+            <div class="pix-qrcode" id="pix-qrcode-box" style="display:none;"></div>
+            <img class="pix-qrcode" id="pix-qrcode-img" alt="QR Code do PIX" style="display:none;">
+            <p class="pix-hint">Abra o app do seu banco, escaneie o QR Code ou copie o código abaixo:</p>
+            <textarea class="pix-copy-input" id="pix-copy-text" readonly rows="3"></textarea>
+            <button type="button" class="pix-copy-btn" id="pix-copy-btn" onclick="copyPixCode()">Copiar código PIX</button>
+        </div>
+
+        <p class="payment-secure"><i data-lucide="shield-check"></i>Pagamento 100% seguro via PIX</p>
+
+        <img class="promo-banner" src="images/banner-pastor.webp" alt="UAI Repasses — Os melhores carros, antes de todo mundo">
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/payment-form.js"></script>
+    <script>
+        const cfg = window.UAI_CONFIG || {};
+
+        // Cars grid
+        const carsGrid = document.getElementById('cars-grid');
+        const moreCarsNode = carsGrid.querySelector('.more-cars');
+        (cfg.cars || []).forEach(car => {
+            const card = document.createElement('div');
+            card.className = 'car-card';
+            card.innerHTML = `
+                <div class="car-badge">DISPONÍVEL</div>
+                <img src="${car.image}" alt="${car.model}" class="car-image">
+                <div class="car-info">
+                    <div class="car-model">${car.model}</div>
+                    <div class="car-price">${car.price}</div>
+                </div>`;
+            carsGrid.insertBefore(card, moreCarsNode);
+        });
+        document.getElementById('extra-vehicles').textContent = '+' + (cfg.extraVehicles ?? 623);
+        const chosenState = localStorage.getItem('uaiSelectedState') || cfg.state || 'São Paulo (SP)';
+        document.getElementById('cars-state').textContent = chosenState + ':';
+
+        // Reviews
+        const reviewsList = document.getElementById('reviews-list');
+        (cfg.reviews || []).forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = `
+                <div class="review-head">
+                    <img src="${r.avatar}" alt="${r.name}">
+                    <div>
+                        <div class="review-name">${r.name}</div>
+                        <span class="review-stars">${'★'.repeat(r.stars)}</span><span class="review-when">${r.when}</span>
+                    </div>
+                </div>
+                <p class="review-text">${r.text}</p>
+                ${r.photo ? `<img class="review-photo" src="${r.photo}" alt="Carro comprado no grupo">` : ''}`;
+            reviewsList.appendChild(card);
+        });
+
+        // Members / urgency numbers
+        const members = cfg.members ?? 473;
+        const maxMembers = cfg.maxMembers ?? 500;
+        const slotsLeft = maxMembers - members;
+        document.getElementById('group-members-text').textContent = `· ${members} membros`;
+        document.getElementById('urgency-sub').textContent = `Apenas ${slotsLeft} vagas restantes de ${maxMembers}`;
+        document.getElementById('urgency-count').textContent = `${members}/${maxMembers}`;
+        document.getElementById('urgency-bar-fill').style.width = Math.min(100, Math.round((members / maxMembers) * 100)) + '%';
+        document.getElementById('payment-price').textContent = `Acesso VIP · ${cfg.vipPrice || 'R$ 49,90'}`;
+        document.getElementById('pay-price').textContent = cfg.vipPrice || 'R$ 49,90';
+
+        // A integração de pagamentos deve chamar esta função após uma entrada confirmada.
+        const toast = document.getElementById('notify-toast');
+        const toastAvatar = document.getElementById('notify-avatar');
+        const toastName = document.getElementById('notify-name');
+
+        window.showVerifiedJoinNotification = function showVerifiedJoinNotification(member) {
+            if (!member || !member.name || !member.avatar) return;
+            toastAvatar.src = member.avatar;
+            toastAvatar.alt = member.name;
+            toastName.textContent = member.name;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        };
+
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+
+        // Veio do index.html com o estado já escolhido: a página aparece do
+        // topo normalmente e, em seguida, desce sozinha até o formulário de
+        // cadastro (WhatsApp/Nome/CPF). Usamos ?scrollTo= em vez de #hash
+        // porque o navegador pularia direto pra lá antes de qualquer JS rodar.
+        if (new URLSearchParams(window.location.search).get('scrollTo') === 'payment-form') {
+            window.scrollTo(0, 0);
+            const paymentForm = document.getElementById('payment-form');
+            if (paymentForm) {
+                setTimeout(() => {
+                    paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 600);
+            }
+        }
+    </script>
+</body>
+</html>

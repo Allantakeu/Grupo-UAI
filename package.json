@@ -1,0 +1,11 @@
+{
+  "name": "KIT ANUAL - 8 Whey, 4 Creatina, 3 Pré-Treino e 1 Barrinha",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node dev-server.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
