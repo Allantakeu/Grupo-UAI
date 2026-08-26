@@ -7,10 +7,10 @@ const path = require('path');
 try {
   process.loadEnvFile(path.join(__dirname, '.env'));
 } catch {
-  // .env é opcional: sem ele, as chamadas à PrimeCash Brasil falham com um erro claro.
+  // .env é opcional: sem ele, as chamadas à MagicPay falham com um erro claro.
 }
 
-const { onlyDigits, createPixTransaction, getTransaction } = require('./lib/primecash');
+const { onlyDigits, createPixTransaction, getTransaction } = require('./lib/magicpay');
 
 const PUBLIC_DIR = __dirname;
 const LEADS_FILE = path.join(__dirname, 'leads.json');
@@ -125,7 +125,7 @@ async function handleLeadSubmission(req, res) {
   });
 }
 
-// Cria a cobrança PIX na PrimeCash Brasil pelo valor fixo de R$ 49,90.
+// Cria a cobrança PIX na MagicPay pelo valor fixo de R$ 49,90.
 async function handlePixCreate(req, res) {
   const payload = await readJsonBody(req, res);
   if (!payload) return;
@@ -146,7 +146,7 @@ async function handlePixCreate(req, res) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(transaction));
   } catch (err) {
-    console.error('Falha ao criar cobrança PIX na PrimeCash Brasil:', err.message, err.data || '');
+    console.error('Falha ao criar cobrança PIX na MagicPay:', err.message, err.data || '');
     res.writeHead(err.status && err.status >= 400 && err.status < 500 ? 422 : 502, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: err.message || 'Falha ao criar cobrança PIX' }));
   }
@@ -160,7 +160,7 @@ async function handlePixStatus(req, res, id) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(transaction));
   } catch (err) {
-    console.error('Falha ao consultar transação PIX na PrimeCash Brasil:', err.message, err.data || '');
+    console.error('Falha ao consultar transação PIX na MagicPay:', err.message, err.data || '');
     res.writeHead(err.status && err.status >= 400 && err.status < 500 ? 404 : 502, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: err.message || 'Falha ao consultar transação PIX' }));
   }

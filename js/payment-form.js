@@ -1,6 +1,6 @@
-// Fluxo de 4 etapas do widget de pagamento: WhatsApp -> Nome/E-mail -> CPF -> PIX (PrimeCash Brasil).
+// Fluxo de 4 etapas do widget de pagamento: WhatsApp -> Nome/E-mail -> CPF -> PIX (MagicPay).
 // IMPORTANTE: este arquivo só fala com o próprio backend (server.js -> /api/pix/*).
-// A Chave Secreta da PrimeCash Brasil nunca fica exposta aqui — toda chamada à API fica no servidor.
+// A Chave Secreta da MagicPay nunca fica exposta aqui — toda chamada à API fica no servidor.
 
 const leadData = { phone: '', name: '', email: '', cpf: '' };
 let pixPollTimer = null;
@@ -181,7 +181,7 @@ async function saveLeadLocally(data) {
 }
 
 // Procura, de forma tolerante, o código "copia e cola" dentro da resposta do gateway
-// (a PrimeCash Brasil manda em pix.qrcode; outros nomes ficam como fallback caso a
+// (a MagicPay manda em pix.qrcode; outros nomes ficam como fallback caso a
 // API mude ou o provedor de pagamento seja trocado de novo no futuro).
 function extractPixCopyCode(transaction) {
     const pix = transaction.pix || transaction.pixData || {};
@@ -233,7 +233,7 @@ function renderPixQrCode(container, text) {
     return false;
 }
 
-// Status possíveis retornados pela PrimeCash Brasil (DepositResource.status).
+// Status possíveis retornados pela MagicPay (DepositResource.status).
 const PIX_STATUS_LABELS = {
     processing: 'Processando pagamento…',
     waiting_payment: 'Aguardando pagamento…',
@@ -283,7 +283,7 @@ function pollPixStatus(transactionId) {
     }, 5000);
 }
 
-// Cria a cobrança PIX de R$ 49,90 via PrimeCash Brasil (rota /api/pix/create do próprio servidor).
+// Cria a cobrança PIX de R$ 49,90 via MagicPay (rota /api/pix/create do próprio servidor).
 async function requestPixCharge(data) {
     const payButton = document.getElementById('pay-button');
     const errorPix = document.getElementById('error-pix');
@@ -309,12 +309,12 @@ async function requestPixCharge(data) {
         const qrImage = extractPixQrImage(transaction);
 
         document.getElementById('pix-copy-text').value = copyCode
-            || 'Código PIX não veio na resposta da API — consulte o painel da PrimeCash Brasil pelo id da transação.';
+            || 'Código PIX não veio na resposta da API — consulte o painel da MagicPay pelo id da transação.';
 
         const imgEl = document.getElementById('pix-qrcode-img');
         const qrBox = document.getElementById('pix-qrcode-box');
         if (qrImage) {
-            // A própria PrimeCash Brasil já retornou uma imagem/URL de QR Code pronta.
+            // A própria MagicPay já retornou uma imagem/URL de QR Code pronta.
             imgEl.src = qrImage;
             imgEl.style.display = 'flex';
         } else if (copyCode && qrBox && window.QRCode) {

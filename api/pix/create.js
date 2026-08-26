@@ -1,6 +1,6 @@
-const { onlyDigits, createPixTransaction } = require('../../lib/primecash');
+const { onlyDigits, createPixTransaction } = require('../../lib/magicpay');
 
-// POST /api/pix/create — cria a cobrança PIX de R$ 49,90 na PrimeCash Brasil.
+// POST /api/pix/create — cria a cobrança PIX de R$ 49,90 na MagicPay.
 // A Chave Secreta nunca sai desta função: o navegador só recebe de volta
 // o id da transação e os dados do QR Code/copia-e-cola.
 module.exports = async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
     const transaction = await createPixTransaction({ name, email, phone, cpf });
     res.status(200).json(transaction);
   } catch (err) {
-    console.error('Falha ao criar cobrança PIX na PrimeCash Brasil:', err.message, err.data || '');
+    console.error('Falha ao criar cobrança PIX na MagicPay:', err.message, err.data || '');
     res.status(err.status && err.status >= 400 && err.status < 500 ? 422 : 502).json({
       error: err.message || 'Falha ao criar cobrança PIX'
     });
